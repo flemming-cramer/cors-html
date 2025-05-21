@@ -44,7 +44,7 @@ app.get('/jokes/random', async (req, res) => {
 // Add a root route handler
 app.get('/', (req, res) => {
   debug('Root route accessed');
-  res.json({ message: 'Joke API server is running' });
+  res.json({ message: 'Joke API server is running fc' });
 });
 
 const PORT = process.env.PORT || 3000;

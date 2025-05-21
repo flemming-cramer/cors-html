@@ -4,16 +4,22 @@ const debug = require('debug')('app:server');
 
 const app = express();
 
+// CORS middleware - apply to all routes
 app.use((req, res, next) => {
   debug(`${req.method} ${req.url}`);
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   
-  // Update CSP header to be less restrictive for development
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Update CSP header
   res.header(
     'Content-Security-Policy',
-    "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    "default-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src *;"
   );
   next();
 });

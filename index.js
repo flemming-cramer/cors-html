@@ -11,6 +11,7 @@ const app = express();
 
 // CORS middleware - apply to all routes
 app.use((req, res, next) => {
+  console.log('=================================================');
   debug.request(`Incoming ${req.method} request to ${req.url}`);
   debug.request(`Headers: ${JSON.stringify(req.headers, null, 2)}`);
   

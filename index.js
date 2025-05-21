@@ -60,6 +60,7 @@ app.get('/', (req, res) => {
   debug.request('Root route accessed');
   const response = { message: 'Joke API server is running' };
   debug.response(`Sending response: ${JSON.stringify(response)}`);
+  console.log(responsce, 'FC');
   res.json(response);
 });
 

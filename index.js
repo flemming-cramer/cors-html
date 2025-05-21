@@ -5,10 +5,13 @@ const app = express();
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  // Add CSP header to allow only self-hosted resources
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Update CSP header to be less restrictive for development
   res.header(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self'"
+    "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
   );
   next();
 });
@@ -26,5 +29,10 @@ app.get('/jokes/random', async (req, res) => {
   }
 });
 
+// Add a root route handler
+app.get('/', (req, res) => {
+  res.json({ message: 'Joke API server is running' });
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

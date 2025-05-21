@@ -4,10 +4,11 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.18.2",
-    "node-fetch": "^2.6.12"
+    "node-fetch": "^2.6.12",
+    "debug": "^4.3.4"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js"
+    "start": "DEBUG=app:* node index.js",
+    "dev": "DEBUG=app:* node index.js"
   }
 }

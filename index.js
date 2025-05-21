@@ -44,11 +44,13 @@ app.get('/jokes/random', async (req, res) => {
 // Add a root route handler
 app.get('/', (req, res) => {
   debug('Root route accessed');
-  res.json({ message: 'Joke API server is running fc' });
+  res.json({ message: 'Joke API server is running' });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  debug(`Server running on http://localhost:${PORT}`);
-  console.log(`Server running on http://localhost:${PORT}`);
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+  debug(`Server running on http://${HOST}:${PORT}`);
+  console.log(`Server running on http://${HOST}:${PORT}`);
 });

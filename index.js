@@ -11,7 +11,6 @@ const app = express();
 
 // CORS middleware - apply to all routes
 app.use((req, res, next) => {
-  console.log('=================================================');
   debug.request(`Incoming ${req.method} request to ${req.url}`);
   debug.request(`Headers: ${JSON.stringify(req.headers, null, 2)}`);
   
@@ -60,9 +59,7 @@ app.get('/jokes/random', async (req, res) => {
 app.get('/', (req, res) => {
   debug.request('Root route accessed');
   const response = { message: 'FC Joke API server is running' };
-  console.log('FC1');
   debug.response(`Sending response: ${JSON.stringify(response)}`);
-  console.log('FC2');
   res.json(response);
 });
 

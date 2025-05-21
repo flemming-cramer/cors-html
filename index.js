@@ -58,7 +58,7 @@ app.get('/jokes/random', async (req, res) => {
 // Add a root route handler
 app.get('/', (req, res) => {
   debug.request('Root route accessed');
-  const response = { message: 'FC Joke API server is running' };
+  const response = { message: 'FC2 Joke API server is running' };
   debug.response(`Sending response: ${JSON.stringify(response)}`);
   res.json(response);
 });

@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.get('/jokes/random', async (req, res) => {
   debug('Fetching random joke');
   try {
-    const response = await fetch('https://joke-api-strict-cors.appspot.com/jokes/random');
+    const response = await fetch('https://v2.jokeapi.dev/joke/Programming?safe-mode');
     if (!response.ok) {
       debug(`API error: ${response.status}`);
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,7 +44,7 @@ app.get('/jokes/random', async (req, res) => {
 // Add a root route handler
 app.get('/', (req, res) => {
   debug('Root route accessed');
-  res.json({ message: 'Joke API server is running fc' });
+  res.json({ message: 'Joke API server is running' });
 });
 
 const PORT = process.env.PORT || 3000;

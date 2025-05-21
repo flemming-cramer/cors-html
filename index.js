@@ -59,9 +59,9 @@ app.get('/jokes/random', async (req, res) => {
 app.get('/', (req, res) => {
   debug.request('Root route accessed');
   const response = { message: 'FC Joke API server is running' };
-  console.log(response);
+  console.log('FC1');
   debug.response(`Sending response: ${JSON.stringify(response)}`);
-  console.log(response, 'FC');
+  console.log('FC2');
   res.json(response);
 });
 

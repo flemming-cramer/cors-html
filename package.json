@@ -5,7 +5,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "node-fetch": "^2.6.12",
-    "debug": "^4.3.4"
+    "debug": "^4.3.4",
+    "abort-controller": "^3.0.0"
   },
   "scripts": {
     "start": "DEBUG=app:* node index.js",

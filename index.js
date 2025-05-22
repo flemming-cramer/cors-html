@@ -1,5 +1,6 @@
 const express = require('express');
 const fetch = require('node-fetch');
+const AbortController = require('abort-controller');
 const debug = {
   server: require('debug')('app:server'),
   request: require('debug')('app:request'),
@@ -19,19 +20,43 @@ const jokeCache = {
 // Retry configuration
 const RETRY_COUNT = 3;
 const INITIAL_RETRY_DELAY = 1000; // 1 second
+const FETCH_TIMEOUT = 5000; // 5 seconds timeout
 
 // Helper function to implement exponential backoff retry
 async function fetchWithRetry(url, retries = RETRY_COUNT, delay = INITIAL_RETRY_DELAY) {
   try {
     debug.request(`Attempting fetch, remaining retries: ${retries}`);
-    const response = await fetch(url);
     
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      controller.abort();
+    }, FETCH_TIMEOUT);
+
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'JokeAPI/1.0',
+          'Accept': 'application/json'
+        }
+      });
+      
+      clearTimeout(timeout);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } finally {
+      clearTimeout(timeout);
+    }
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      debug.error('Request timed out');
+      throw new Error('Request timed out');
     }
     
-    return await response.json();
-  } catch (error) {
     if (retries === 0) {
       throw error;
     }

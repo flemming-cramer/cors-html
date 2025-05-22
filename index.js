@@ -1,6 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const AbortController = require('abort-controller');
+const path = require('path');
 const debug = {
   server: require('debug')('app:server'),
   request: require('debug')('app:request'),
@@ -9,6 +10,9 @@ const debug = {
 };
 
 const app = express();
+
+// Serve static files from public directory
+app.use(express.static('public'));
 
 // Simple in-memory cache
 const jokeCache = {
@@ -94,6 +98,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve the HTML page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.get('/jokes/random', async (req, res) => {
   debug.request('Checking cache for available joke');
   
@@ -126,14 +135,6 @@ app.get('/jokes/random', async (req, res) => {
     
     res.status(500).json({ type: 'error', message: error.message });
   }
-});
-
-// Add a root route handler
-app.get('/', (req, res) => {
-  debug.request('Root route accessed');
-  const response = { message: 'FC2 Joke API server is running' };
-  debug.response(`Sending response: ${JSON.stringify(response)}`);
-  res.json(response);
 });
 
 const PORT = process.env.PORT || 3000;
